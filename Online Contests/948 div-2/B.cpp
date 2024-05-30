@@ -1,62 +1,57 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define gc getchar_unlocked
+#include<bits/stdc++.h>
 #define ll long long
-#define deb(x) cout << #x << "=" << x << endl
-#define pb push_back
-#define mp make_pair
-#define F first
-#define S second
-#define all(x) x.begin(), x.end()
-#define clr(x) memset(x, false, sizeof(x))
-#define sortall(x) sort(all(x))
-#define PI 3.1415926535897932384626
-#define mod 1000000007
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pl;
-typedef vector<int> vi;
-typedef vector<ll> vl;
-typedef vector<pii> vpii;
-typedef vector<pl> vpl;
-typedef vector<vi> vvi;
-typedef vector<vl> vvl;
+using namespace std;
 
-int main()
-{
-    ll t=1;
-    cin >> t;
-    while (t--)
-    {
-        //write code here
-        int x,j; cin >> x;
-        vector<int> v(32);
+int main(){
+    ll t; cin >> t;
+    while(t--){
+        ll n; cin >> n;
+        ll a[n], b[n+1];
+        for(ll i=0; i<n; i++) cin >> a[i];
+        for(ll i=0; i<n+1; i++) cin >> b[i];
 
-        for(int i=29; i>=0; i--){
-            v[i] = (x >= (1<<i));
-            x %= (1<<i);
+        ll cnt=0, m = 0;
+        for(ll i=0; i<n; i++){
+            if(a[i]>=b[n] && b[i]<=b[n]){
+                cnt = 1;
+                m = 1;
+                break;
+            }
+            else if(a[i]<=b[n] && b[i]>=b[n]){
+                cnt = 1;
+                m = 1;
+                break;
+            }
         }
-        for(int i=0; i<32; ){
-            if(v[i]==0){
-                i++;
-                continue;
+        ll flag = 0, cont = 1e9, s=0;
+        for(ll i=0; i<n; i++){
+            cnt += abs(a[i]-b[i]);
+            if(a[i]>=b[i]){
+                if(a[i]>=flag){
+                    flag = a[i];
+                }
+                
             }
-            j=i+1;
-            while(v[j]){
-                v[j] = 0;
-                j++;
+            else{
+                if(b[i]>=flag){
+                    flag = b[i];
+                }
+                
             }
+            if(a[i]<=cont){
+                cont = a[i];
+            }
+            if(b[i]<=cont){
+                cont = b[i];
+            }
+        }
+        int cnt2=0, cnt1=0;
+        if(m==0){
+            cnt1 = abs(b[n]-flag)+1;
+            cnt2 = abs(b[n]-cont)+1;
+            cnt += min(cnt1, cnt2);
+        }
 
-            if(j>i+1){
-                v[j]=1;
-                v[i]=-1;
-            }
-            i=j;
-        }
-        cout << 32 << endl;
-        for(auto it: v){
-            cout << it << " ";
-        }
-        cout << endl;
+        cout << cnt << endl;
     }
-    return 0;
 }
